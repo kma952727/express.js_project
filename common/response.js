@@ -1,0 +1,36 @@
+
+// convert array to object if arrayLength is 1
+const arrayToObject = (data) => {
+    if(data.length === 0 && typeof data === 'array')
+        return array[0]
+    else   
+        return data
+}
+
+const successDto = (data) =>{
+    return { 
+        isSuccess: true,
+        data: {
+            detail: arrayToObject(data),
+            httpStatus: 201
+        }
+    }
+};
+const failedDto = (data) => {
+    return { 
+        isSuccess: false,
+        data: {
+            errorCode: data.errorCode,
+            detail: data.detail,
+            httpStatus: data.httpStatus
+        }
+    }
+};
+const errorDto = ({errorCode, detail, httpStatus}) => {
+    return {
+        errorCode: errorCode,
+        detail: detail,
+        httpStatus: httpStatus
+    }
+}
+module.exports = { successDto, failedDto, errorDto }
