@@ -14,13 +14,12 @@ const signUp = async (signUpRequest) => {
     try{
         conn = await getConnection();
         conn.beginTransaction();
-        await userRepo.isExistsUsername(signUpRequest.username, conn);
+        const notExistsUsername = await userRepo.isExistsUsername(signUpRequest.username, conn);
         const hashedPassword = await hashData(signUpRequest.password);
-        const signUpUserData = await userRepo.insertUser(signUpRequest.username, hashedPassword, conn);
+        const signUpUserData = await userRepo.insertUser(notExistsUsername, hashedPassword, conn);
         conn.commit();
         return response.successDto(signUpUserData);
     } catch(err) {
-        console.log(err);
         conn.rollback();
         return response.failedDto(err);
     } finally {
