@@ -5,6 +5,7 @@
  * 00xx : common
  * 01xx : movie
  * 02xx : user
+ * 98xx : request data
  * 99xx : unknown
  * 
  * 문제행위에 대한 정의입니다.
@@ -12,6 +13,7 @@
  * 
  * xx01 : not found
  * xx02 : exists
+ * xx03 : invalid request
  * xx99 : unknown
  * 
  */
@@ -21,5 +23,6 @@ module.exports = {
     'NOT_FOUND_USER' : '0201', // 존재하지 않는 userId
     'EXISTS_USERNAME' : '0202', // 존재하는 users테이블의 username
     'HASH_FAILED': '0099', // 암호화 실패
+    'INVALID_REQUEST_DATA' : '9803', // 유효하지 않는 요청데이터
     'UNKNOWN_ERROR' : '9999', // 핸들링 하지 못한 예외
 }
