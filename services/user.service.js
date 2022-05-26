@@ -1,7 +1,7 @@
 const getConnection = require('../config/db');
 const hashData = require('../common/encoder.provider');
 const userRepo = require('../models/user.model');
-const response = require('../common/response');
+const { successResponse } = require('../common/response');
 
 /**
  * 사용자의 가입신청을 처리합니다.
@@ -18,7 +18,7 @@ const signUp = async (signUpRequest) => {
         const hashedPassword = await hashData(signUpRequest.password);
         const signUpUserData = await userRepo.insertUser(notExistsUsername, hashedPassword, conn);
         conn.commit();
-        return response.successDto(signUpUserData);
+        return successResponse(signUpUserData);
     } catch(err) {
         conn.rollback();
         throw err;
@@ -38,7 +38,7 @@ const getUserInfo = async (getUserRequest) => {
     try{
         conn = await getConnection();
         const user = await userRepo.getUser(getUserRequest.userId, conn);
-        return response.successDto(user);
+        return successResponse(user);
     } catch (err) {
         throw err;
     } finally {

@@ -7,30 +7,17 @@ const arrayToObject = (data) => {
         return data
 }
 
-const successDto = (data) =>{
+const successResponse = (data) =>{
     return { 
-        isSuccess: true,
-        data: {
-            detail: arrayToObject(data),
-            httpStatus: 201
-        }
+        detail: arrayToObject(data),
+        httpStatus: 201
     }
 };
-const failedDto = (data) => {
-    return { 
-        isSuccess: false,
-        data: {
-            errorCode: data.errorCode,
-            detail: data.detail,
-            httpStatus: data.httpStatus
-        }
-    }
-};
-const errorDto = ({errorCode, detail, httpStatus}) => {
+const errorResponse = ({errorCode, detail, httpStatus}) => {
     return {
         errorCode: errorCode,
         detail: detail,
         httpStatus: httpStatus
     }
 }
-module.exports = { successDto, failedDto, errorDto }
+module.exports = { successResponse, errorResponse }

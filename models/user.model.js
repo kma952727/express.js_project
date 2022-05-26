@@ -1,5 +1,5 @@
 const errorCode = require('../common/error.code');
-const { errorDto } = require('../common/response');
+const { errorResponse } = require('../common/response');
 /**
  * users 테이블에 사용자이름 중복여부를 확인합니다.
  * @param {중복여부를 알고싶은 users테이블의 username 필드} username 
@@ -8,7 +8,7 @@ exports.isExistsUsername = async (username, conn) => {
     const sql = `SELECT count(*) AS count FROM users WHERE username = '${username}' GROUP BY 'username'`;
     const result = await conn.query(sql);
     if(result[0].length !== 0 && result[0][0].count > 0) {
-        throw errorDto({
+        throw errorResponse({
             errorCode: errorCode.EXISTS_USERNAME,
             detail: `유저이름 중복여부 체크, ${username}`,
             httpStatus: 409
@@ -25,9 +25,9 @@ exports.insertUser = async (username, password, conn) => {
     try{
         const sql = `INSERT INTO users (username, password, register_date, account) VALUES (?, ?, ?, ?)`;
         await conn.execute(sql, [username, password, new Date(), 0]);
-        return username
+        return username;
     } catch(err) {
-        throw errorDto({
+        throw errorResponse({
             errorCode : errorCode.UNKNOWN_ERROR,
             detail: `회원가입 실패, ${username}`,
             httpStatus: 500
@@ -46,7 +46,7 @@ exports.getUser = async (userId, conn) => {
     const [rows, fields] = await conn.execute(sql, [userId]);
     
     if(rows.length === 0) {
-        throw errorDto({
+        throw errorResponse({
             errorCode: errorCode.NOT_FOUND_USER,
             detail: `사용자가 없습니다. userId: ${userId}`,
             httpStatus: 404
