@@ -3,13 +3,12 @@ app = express(),
 bodyParser = require('body-parser'),
 logRequestTime = require('./middleware/time.middleware'),
 dotenv = require('./config');
-userRoute = require('./routes/user.route');
 
-//  Use MiddleWare
+//  MiddleWare
 app.use(bodyParser.json());
 app.use(logRequestTime);
-//  Use Router
-app.use('/users', userRoute);
+//  Router
+app.use('/users', require('./routes/user.route'));
 //  Listening
 app.listen(dotenv.PORT, ()=> {
     console.log(`Listening on Port: ${dotenv.PORT}`);
