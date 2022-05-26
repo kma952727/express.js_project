@@ -7,12 +7,13 @@ const { errorDto } = require('../common/response');
 exports.isExistsUsername = async (username, conn) => {
     const sql = `SELECT count(*) AS count FROM users WHERE username = '${username}' GROUP BY 'username'`;
     const result = await conn.query(sql);
-    if(result[0].length !== 0 && result[0][0].count > 0) 
+    if(result[0].length !== 0 && result[0][0].count > 0) {
         throw errorDto({
             errorCode: errorCode.EXISTS_USERNAME,
             detail: `유저이름 중복여부 체크, ${username}`,
             httpStatus: 409
-    });
+        });
+    }
     return username;
 }
 
@@ -41,19 +42,15 @@ exports.insertUser = async (username, password, conn) => {
  * @returns userData
  */
 exports.getUser = async (userId, conn) => {
-    try{
-        const sql = `SELECT * FROM users where user_id = ?`;
-        const [rows, fields] = await conn.execute(sql, [userId]);
-        if(rows[0].length === 0) {
-            throw errorDto({
-                errorCode: errorCode.NOT_FOUND_USER,
-                detail: `사용자가 없습니다. userId: ${userId}`,
-                httpStatus: 404
-            });
-        }
-        return rows[0];
-        
-    }catch(err) {
-        throw err;
+    const sql = `SELECT * FROM users where user_id = ?`;
+    const [rows, fields] = await conn.execute(sql, [userId]);
+    
+    if(rows.length === 0) {
+        throw errorDto({
+            errorCode: errorCode.NOT_FOUND_USER,
+            detail: `사용자가 없습니다. userId: ${userId}`,
+            httpStatus: 404
+        });
     }
+    return rows;
 }

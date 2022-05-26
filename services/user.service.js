@@ -21,7 +21,7 @@ const signUp = async (signUpRequest) => {
         return response.successDto(signUpUserData);
     } catch(err) {
         conn.rollback();
-        return response.failedDto(err);
+        throw err;
     } finally {
         conn.release();
     }
@@ -40,7 +40,7 @@ const getUserInfo = async (getUserRequest) => {
         const user = await userRepo.getUser(getUserRequest.userId, conn);
         return response.successDto(user);
     } catch (err) {
-        return response.failedDto(err);
+        throw err;
     } finally {
         conn.release();
     }
