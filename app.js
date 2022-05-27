@@ -1,12 +1,44 @@
+const errorCode = require('./common/error.code');
+const { errorResponse, successResponse } = require('./common/response');
+
 const express = require('express'),
 app = express(),
 bodyParser = require('body-parser'),
-logRequestTime = require('./middleware/time.middleware'),
+passport = require('./middleware/passportConfig'),
+jwtProvider = require('./common/jwt.provider');
 dotenv = require('./config');
+logRequestTime = require('./middleware/time.middleware');
 
 //  MiddleWare
 app.use(bodyParser.json());
 app.use(logRequestTime);
+app.use(passport.initialize());  
+
+//  Login
+app.post('/login',(req, res, next) => {
+    passport.authenticate('local', async (error, user, isSuccess) => {
+        if(isSuccess) {
+            const [access, refresh] = await jwtProvider.generateToken(user.user_id);
+            res.status(200)
+                .json(successResponse({access, refresh}));
+        }else {
+            res.status(400)
+                .json(errorResponse({errorCode: errorCode.GENERATE_TOKEN_FAILED, detail: '로그인 실패', httpStatus}));
+        }
+    })(req, res, next);
+});
+
+//  verify token
+app.use( async (req, res, next) => {
+    const result = 
+        await jwtProvider.isVerifiedToken(req.headers.accesstoken, req.headers.refreshtoken);
+    if(!result.isSuccess)
+        res.status(400).send(errorResponse(result.errorData, result.message, result.httpStatus)); 
+    else
+        next();
+    
+});
+
 //  Router
 app.use('/users', require('./routes/user.route'));
 //  Listening

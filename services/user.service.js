@@ -23,7 +23,7 @@ const userService = {
     getUserInfo : async (getUserRequest) => {
         const conn = await getConnection();
         try{
-            const user = await User.getUser(getUserRequest.userId, conn);
+            const user = await User.getUserById(getUserRequest.userId, conn);
             return successResponse(user);
         } catch (err) {
             throw err;
