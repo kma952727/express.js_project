@@ -21,11 +21,7 @@ const User = {
         const sql = `SELECT count(*) AS count FROM users WHERE username = '${username}' GROUP BY 'username'`;
         const result = await conn.query(sql);
         if(result[0].length !== 0 && result[0][0].count > 0) {
-            throw errorResponse({
-                errorCode: errorCode.EXISTS_USERNAME,
-                detail: `유저이름 중복여부 체크, ${username}`,
-                httpStatus: 409
-            });
+            throw errorResponse(errorCode.EXISTS_USERNAME, `유저이름 중복여부 체크, ${username}`, 409);
         }
         return username;
     },
@@ -35,22 +31,14 @@ const User = {
             await conn.execute(sql, [username, password, new Date(), 0]);
             return username;
         } catch(err) {
-            throw errorResponse({
-                errorCode : errorCode.UNKNOWN_ERROR,
-                detail: `회원가입 실패, ${username}`,
-                httpStatus: 500
-            });
+            throw errorResponse(errorCode.UNKNOWN_ERROR, `회원가입 실패, ${username}`, 500);
         }
     },
     getUserById : async (userId, conn) => {
         const sql = `SELECT * FROM users WHERE user_id = ?`;
         const [rows, fields] = await conn.execute(sql, [userId]);
         if(rows.length === 0) {
-            throw errorResponse({
-                errorCode: errorCode.NOT_FOUND_USER,
-                detail: `사용자가 없습니다. userId: ${userId}`,
-                httpStatus: 404
-            });
+            throw errorResponse(errorCode.NOT_FOUND_USER, `사용자가 없습니다. userId: ${userId}`, 404);
         }
         return rows;
     },
@@ -59,11 +47,7 @@ const User = {
             const sql = `SELECT * FROM users WHERE username = ?`;
             const [rows, fields] = await conn.execute(sql, [username]);
             if(rows.length === 0) {
-                throw errorResponse({
-                    errorCode: errorCode.NOT_FOUND_USER,
-                    detail: `사용자가 없습니다. username: ${username}`,
-                    httpStatus: 404
-                });
+                throw errorResponse(errorCode.NOT_FOUND_USER, `사용자가 없습니다. username: ${username}`, 404);
             }
             return rows[0];
         } catch(err) {

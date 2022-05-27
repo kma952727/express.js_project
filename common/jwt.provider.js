@@ -9,8 +9,10 @@ const key = process.env.JWT_SECRET_KEY;
 module.exports = jwtProvider = {
     generateToken : async (userID) => {
         try{
-            const access =  await jwt.sign( { userID }, key, { expiresIn: 30 * 60 } );
-            const refresh = await jwt.sign( { userID }, key, { expiresIn: 360 * 60 } );
+            const [ access, refresh ] = await Promise.all([ 
+                jwt.sign( { userID }, key, { expiresIn: 120 * 60 } ),
+                jwt.sign( { userID }, key, { expiresIn: 360 * 60 } )
+            ]);
             return [ access, refresh ];
         } catch(err) {
             throw err;
