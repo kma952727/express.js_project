@@ -42,10 +42,9 @@ const User = {
             });
         }
     },
-    getUser : async (userId, conn) => {
-        const sql = `SELECT * FROM users where user_id = ?`;
+    getUserById : async (userId, conn) => {
+        const sql = `SELECT * FROM users WHERE user_id = ?`;
         const [rows, fields] = await conn.execute(sql, [userId]);
-        
         if(rows.length === 0) {
             throw errorResponse({
                 errorCode: errorCode.NOT_FOUND_USER,
@@ -54,6 +53,22 @@ const User = {
             });
         }
         return rows;
+    },
+    getUserByUsername : async (username, conn) => {
+        try{
+            const sql = `SELECT * FROM users WHERE username = ?`;
+            const [rows, fields] = await conn.execute(sql, [username]);
+            if(rows.length === 0) {
+                throw errorResponse({
+                    errorCode: errorCode.NOT_FOUND_USER,
+                    detail: `사용자가 없습니다. username: ${username}`,
+                    httpStatus: 404
+                });
+            }
+            return rows[0];
+        } catch(err) {
+            throw err;
+        }
     }
 }
 

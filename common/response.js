@@ -13,11 +13,8 @@ const successResponse = (data) =>{
         httpStatus: 201
     }
 };
-const errorResponse = ({errorCode, detail, httpStatus}) => {
-    return {
-        errorCode: errorCode,
-        detail: detail,
-        httpStatus: httpStatus
-    }
-}
+const errorResponse = (errorCode, detail, httpStatus) => {
+    return { errorCode, detail, httpStatus }
+};
+
 module.exports = { successResponse, errorResponse }
