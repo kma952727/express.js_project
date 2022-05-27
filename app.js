@@ -4,17 +4,17 @@ const { errorResponse, successResponse } = require('./common/response');
 const express = require('express'),
 app = express(),
 bodyParser = require('body-parser'),
-passport = require('./middleware/passportConfig'),
+passport = require('./middleware/passport.config'),
 jwtProvider = require('./common/jwt.provider');
 dotenv = require('./config');
 logRequestTime = require('./middleware/time.middleware');
 
-//  MiddleWare
+/** Middle */
 app.use(bodyParser.json());
 app.use(logRequestTime);
 app.use(passport.initialize());  
 
-//  Login
+/** Login */
 app.post('/login',(req, res, next) => {
     passport.authenticate('local', async (error, user, isSuccess) => {
         if(isSuccess) {
@@ -28,7 +28,7 @@ app.post('/login',(req, res, next) => {
     })(req, res, next);
 });
 
-//  verify token
+/** JWT Authentication */
 app.use( async (req, res, next) => {
     const result = 
         await jwtProvider.isVerifiedToken(req.headers.accesstoken, req.headers.refreshtoken);
@@ -39,9 +39,15 @@ app.use( async (req, res, next) => {
     
 });
 
-//  Router
+/** Route */
 app.use('/users', require('./routes/user.route'));
-//  Listening
+app.use('/movies', require('./routes/movie.route'));
+
+app.use((err, req, res, next) => {
+    console.log(err)
+    res.status(err.httpStatus).send(err);
+});
+
 app.listen(dotenv.PORT, ()=> {
     console.log(`Listening on Port: ${dotenv.PORT}`);
 });
