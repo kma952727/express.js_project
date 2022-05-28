@@ -19,11 +19,16 @@ const { errorResponse } = require('../common/response');
 const User = {
     isExistsUsername : async (username, conn) => {
         const sql = `SELECT count(*) AS count FROM users WHERE username = '${username}' GROUP BY 'username'`;
-        const result = await conn.query(sql);
+        const user = await conn.query(sql);
         if(result[0].length !== 0 && result[0][0].count > 0) {
             throw errorResponse(errorCode.EXISTS_USERNAME, `유저이름 중복여부 체크, ${username}`, 409);
         }
         return username;
+    },
+    isExistsUserId : async (id, conn) => {
+        const sql = 'SELECT count(*) as count FROM users WHERE user_id = ? GROUP BY user_id';
+        const [row, fields] = await conn.execute(sql, [id]);
+        return row.length === 0? false: true
     },
     insertUser : async (username, password, conn) => {
         try{

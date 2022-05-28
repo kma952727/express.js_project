@@ -20,7 +20,8 @@ const movieSummary = (movie) => {
     return {
         id: movie.movie_id,
         title: movie.title,
-        popularity: movie.popularity
+        popularity: movie.popularity,
+        overview: movie.overview
     }
 }
 
