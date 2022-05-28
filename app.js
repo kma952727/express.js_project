@@ -1,44 +1,47 @@
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const dotenv = require('./config');
+const jwtProvider = require('./common/jwt.provider');
+const logRequestTime = require('./middleware/time.middleware');
 const errorCode = require('./common/error.code');
 const { errorResponse, successResponse } = require('./common/response');
+require('./middleware/passport.config')(passport);
 
-const express = require('express'),
-app = express(),
-bodyParser = require('body-parser'),
-passport = require('./middleware/passport.config'),
-jwtProvider = require('./common/jwt.provider');
-dotenv = require('./config');
-logRequestTime = require('./middleware/time.middleware');
-
-/** Middle */
+app.use((req, res, next) => {
+    if (!['GET', 'PUT', 'POST', 'DELETE'].includes(req.method)) 
+        return res.send(405, 'Method Not Allowed')
+    return next()
+});
 app.use(bodyParser.json());
 app.use(logRequestTime);
-app.use(passport.initialize());  
+app.use(passport.initialize());
 
-/** Login */
 app.post('/login',(req, res, next) => {
-    passport.authenticate('local', async (error, user, isSuccess) => {
+    passport.authenticate('login', async (error, user, isSuccess) => {  
         if(isSuccess) {
             const [access, refresh] = await jwtProvider.generateToken(user.user_id);
-            res.status(200).json(successResponse({access, refresh}));
+            res.status(200).send(successResponse({access, refresh}));
         }else {
             res.status(400)
-                .json(errorResponse({errorCode: errorCode.GENERATE_TOKEN_FAILED, detail: '로그인 실패', httpStatus}));
+                .json(errorResponse({errorCode: errorCode.GENERATE_TOKEN_FAILED, detail: '로그인 실패', httpStatus: 400}));
         }
     })(req, res, next);
 });
 
-/** JWT Authentication */
-app.use(async(req, res, next) => {
-    const result = await jwtProvider.isVerifiedToken(req.headers.accesstoken, req.headers.refreshtoken);
-    if(!result.isSuccess)
-        res.status(400).send(errorResponse(result.errorData, result.message, result.httpStatus)); 
-    else
-        next();   
+app.use((req,res,next)=>{
+    (passport.authenticate('jwt', { session: false }, (...args) => {
+        if(args[1] === false) {
+            next(errorResponse(errorCode.DECODED_TOKEN_FAILED, 'invalid Token!', 401));
+        } else {
+            res.user = args[1];
+            next();
+        }
+    }))(req, res)
 });
 
-/** Route */
 app.use('/users', require('./routes/user.route'));
 app.use('/movies', require('./routes/movie.route'));
 app.use((err, req, res, next) => res.status(err.httpStatus).send(err));
-
 app.listen(dotenv.PORT, ()=> console.log(`Listening on Port: ${dotenv.PORT}`));

@@ -5,6 +5,7 @@
  * 00xx : common
  * 01xx : movie
  * 02xx : user
+ * 96xx : method
  * 97xx : jwt token
  * 98xx : request data
  * 99xx : unknown
@@ -27,6 +28,7 @@ module.exports = {
     'EXISTS_USERNAME' : '0202', // 존재하는 users테이블의 username
     'HASH_FAILED': '0099', // 암호화 실패
     'TOKEN_EXPIRED': '9797', // 토큰 + 만료기간 
+    'INVALID_METHOD' : '9603', // 잘못된 http method
     'DECODED_TOKEN_FAILED': '9798', // 로그인 토큰 유효성 검사 실패
     'GENERATE_TOKEN_FAILED': '9799', // 로그인 토큰 생성 실패
     'INVALID_REQUEST_DATA' : '9803', // 유효하지 않는 요청데이터

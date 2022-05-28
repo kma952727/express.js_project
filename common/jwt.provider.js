@@ -10,8 +10,8 @@ module.exports = jwtProvider = {
     generateToken : async (userID) => {
         try{
             const [ access, refresh ] = await Promise.all([ 
-                jwt.sign( { userID }, key, { expiresIn: 120 * 60 } ),
-                jwt.sign( { userID }, key, { expiresIn: 360 * 60 } )
+                jwt.sign( { userID }, key, { expiresIn: 500 * 60 } ),
+                jwt.sign( { userID }, key, { expiresIn: 500 * 60 } )
             ]);
             return [ access, refresh ];
         } catch(err) {
@@ -21,13 +21,14 @@ module.exports = jwtProvider = {
     isVerifiedToken : async (accessToken, refreshToken) => {
         let isSuccess, errorData, message, httpStatus;
         const conn = await getConnection();
-    
         try{
-            const destructureToken = jwt.verify(accessToken, key);
+            const destructureToken = jwt.verify(accessToken.replaceAll(`"`,""), key);
             await User.getUserById(destructureToken.userID, conn);
-            if (jwt.verify(accessToken, key) !== null && jwt.verify(refreshToken, key) !== null)
+            if (jwt.verify(accessToken.replaceAll(`"`,""), key) !== null && jwt.verify(refreshToken.replaceAll(`"`,""), key) !== null){
                 isSuccess = true;
+            }
         }catch(err) {
+            console.log(err)
             isSuccess = false; 
             switch(err.name) {
                 case 'TokenExpiredError':
