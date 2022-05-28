@@ -1,24 +1,14 @@
-const userSummary = (data) => {
-    return {
-        username: data.username,
-    }
+exports.userSummary = (data) => {
+    return { username: data.username }
 };
 
-const getUserRequest = (data) => {
-    return {
-        userId: data.userId
-    }
+exports.getUserRequest = (data) => {
+    return { userId: data.userId }
 };
 
-const signUpRequest = (data) => {
+exports.signUpRequest = (data) => {
     return {
         username: data.username,
         password: data.password, 
     }
-};
-
-module.exports = {
-    userSummary,
-    signUpRequest,
-    getUserRequest 
 };

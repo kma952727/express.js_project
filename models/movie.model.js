@@ -1,6 +1,7 @@
 const { errorResponse } = require("../common/response");
 const { NOT_FOUND_MOVIE } = require("../common/error.code");
-const Movie = {
+
+module.exports = Movie = {
     getMoviesPage: async (requestPageNum, conn) => {
         const perPage = 5;
         const pageNum = Number(requestPageNum) * perPage;
@@ -29,5 +30,3 @@ const Movie = {
         }
     }
 }
-
-module.exports = Movie;

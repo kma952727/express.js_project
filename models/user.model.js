@@ -1,22 +1,7 @@
 const errorCode = require('../common/error.code');
 const { errorResponse } = require('../common/response');
 
-/**
- *  
- * isExistsUsername
- * users 테이블에 사용자이름 중복여부를 확인합니다.
- * @param {중복여부를 알고싶은 users테이블의 username 필드} username 
- * 
- * insertUser
- * users 테이블에 새로운 사용자데이터를 추가합니다.
- * @returns signUp Result
- * 
- * getUser
- * @param {찾고싶은 사용자의 userId, number} userId 
- * @param {connection 객체} conn 
- * @returns userData
- */
-const User = {
+ module.exports = User = {
     isExistsUsername : async (username, conn) => {
         const sql = `SELECT count(*) AS count FROM users WHERE username = '${username}' GROUP BY 'username'`;
         const user = await conn.query(sql);
@@ -60,5 +45,3 @@ const User = {
         }
     }
 }
-
-module.exports = User;

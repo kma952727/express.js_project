@@ -7,14 +7,12 @@ const arrayToObject = (data) => {
         return data
 }
 
-const successResponse = (data) =>{
+exports.successResponse = (data) => {
     return { 
         detail: arrayToObject(data),
         httpStatus: 201
     }
 };
-const errorResponse = (errorCode, detail, httpStatus) => {
+exports.errorResponse = (errorCode, detail, httpStatus) => {
     return { errorCode, detail, httpStatus }
 };
-
-module.exports = { successResponse, errorResponse }

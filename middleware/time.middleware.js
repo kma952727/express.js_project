@@ -1,6 +1,4 @@
-const logRequestTime = (req, res, next) => {
+module.exports = (req, res, next) => {
     console.log(`${new Date()} ${req.path}`);
     next();
 }
-
-module.exports = logRequestTime;

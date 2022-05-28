@@ -3,7 +3,7 @@ const hashData = require('../common/encoder.provider');
 const User = require('../models/user.model');
 const { successResponse } = require('../common/response');
 
-const userService = {
+module.exports = userService = {
     signUp : async (signUpRequest) => {
         const conn = await getConnection();
         try{
@@ -32,4 +32,3 @@ const userService = {
         }
     }
 }
-module.exports = userService

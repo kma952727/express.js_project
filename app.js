@@ -1,19 +1,15 @@
-const express = require('express');
-const app = express();
+const app = require('express')();
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const dotenv = require('./config');
+const blockHttpMethod = require('./middleware/block.http.method');
 const jwtProvider = require('./common/jwt.provider');
 const logRequestTime = require('./middleware/time.middleware');
 const errorCode = require('./common/error.code');
 const { errorResponse, successResponse } = require('./common/response');
-require('./middleware/passport.config')(passport);
 
-app.use((req, res, next) => {
-    if (!['GET', 'PUT', 'POST', 'DELETE'].includes(req.method)) 
-        return res.send(405, 'Method Not Allowed')
-    return next()
-});
+require('./middleware/passport.config')(passport);
+app.use(blockHttpMethod);
 app.use(bodyParser.json());
 app.use(logRequestTime);
 app.use(passport.initialize());
