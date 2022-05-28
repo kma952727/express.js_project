@@ -1,4 +1,4 @@
-const movieDetail = (movie) => {
+exports.movieDetail = (movie) => {
     return {
         id: movie.movie_id,
         title: movie.title,
@@ -16,7 +16,7 @@ const movieDetail = (movie) => {
     }
 }
 
-const movieSummary = (movie) => {
+exports.movieSummary = (movie) => {
     return {
         id: movie.movie_id,
         title: movie.title,
@@ -24,5 +24,3 @@ const movieSummary = (movie) => {
         overview: movie.overview
     }
 }
-
-module.exports = { movieSummary, movieDetail };

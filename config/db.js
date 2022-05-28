@@ -9,9 +9,4 @@ let pool = mysql.createPool({
     connectionLimit: 10
 });
 
-const getConnection = async () => {
-    const conn = await pool.getConnection(async conn => conn);
-    return conn;
-}
-
-module.exports = getConnection;
+module.exports = async () => await pool.getConnection(async conn => conn);

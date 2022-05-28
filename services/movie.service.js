@@ -2,7 +2,7 @@ const Movie = require('../models/movie.model');
 const getConnection = require('../config/db');
 const {movieSummary, movieDetail} = require('../dtos/movie.dto');
 
-const movieService = {
+module.exports = movieService = {
     getMoviesSummaryPage: async (page) => {
         const conn = await getConnection();
         try{
@@ -26,5 +26,3 @@ const movieService = {
         }
     }
 }
-
-module.exports = movieService;
