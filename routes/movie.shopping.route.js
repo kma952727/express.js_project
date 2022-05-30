@@ -4,6 +4,10 @@ const asyncWrapper = require('../middleware/route.async.wrapper');
 const movieShoppingService = require('../services/movie.shopping.service');
 
 router.route('/movie-carts/items')
+    .get(asyncWrapper(async(req, res) => {
+        const result = await movieShoppingService.getCartItemsByUserId(req.user.userId);
+        res.status(200).send(result);
+    }))
     .post(asyncWrapper(async(req, res) => {
         const addToCartRequest = movieDTO.addToCartRequest(req.body.movieId, req.user.userId);
         await movieShoppingService.addToCart(addToCartRequest);
@@ -11,7 +15,7 @@ router.route('/movie-carts/items')
     }));
 
 router.route('/movie-carts/items/:itemId')
-    .delete(asyncWrapper(async(req, res)=> {
+    .delete(asyncWrapper(async(req, res) => {
         const removeAtCartRequest = movieDTO.removeAtCartRequest(req.params.itemId, req.user.userId);
         await movieShoppingService.removeMovieAtCart(removeAtCartRequest);
         res.status(201).send();
