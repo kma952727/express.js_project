@@ -31,14 +31,6 @@ exports.buyMovieRequest = (movieId, userId) => {
         movieId: movieId
     }
 }
-exports.getCartItemResponse = (item) => {
-    return {
-        item: {
-            movie_id: item.movie_id,
-            movie_cart_item_id: item.movie_cart_item_id
-        }
-    }
-}
 exports.addToCartRequest = (movieId, userId) => {
     return {
         movieId: movieId,

@@ -17,12 +17,12 @@ module.exports = Cart = {
     getCartItemsByUserId : async(userId, conn) => {
         try{
             const getCartItemsSql = `
-                SELECT mci.movie_id, mci.movie_cart_item_id FROM movie_cart_item mci
+                SELECT m.* FROM movie_cart_item mci
                 JOIN movie_cart mc ON mci.movie_cart_id = mc.cart_id
+                JOIN movie m ON m.movie_id = mci.movie_id
                 WHERE mc.user_id = ? 
             `;
             const [rows] = await conn.execute(getCartItemsSql, [userId]);
-            console.log(rows)
             return rows;
         }catch(err) {
             console.log(err)
