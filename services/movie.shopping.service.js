@@ -1,9 +1,20 @@
+const { successResponse } = require('../common/response');
 const getConnection = require('../config/db');
-const { removeAtCartRequest } = require('../dto/movie.dto');
+const { removeAtCartRequest, getCartItemResponse } = require('../dto/movie.dto');
 const Cart = require('../models/cart.model');
 
 module.exports = movieShoppingService = {
-
+    getCartItemsByUserId : async (userId) => {
+        const conn = await getConnection();
+        try{
+            const items = await Cart.getCartItemsByUserId(userId, conn);
+            return successResponse(items.map(item => getCartItemResponse(item)))
+        }catch(err){
+            throw err;
+        }finally{
+            conn.release();
+        }
+    },
     addToCart : async(addToCartRequest) => {
         const conn = await getConnection();
         try{
