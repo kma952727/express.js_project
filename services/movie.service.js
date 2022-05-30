@@ -14,6 +14,17 @@ module.exports = movieService = {
             conn.release();
         }
     },
+    getMovieDetailInfo: async (id) => {
+        const conn = await getConnection(); 
+        try{
+            const movies = await Movie.getMoviesPage(page, conn);
+            return movies.map(movie => movieSummary(movie));
+        } catch(err) {
+            throw err;
+        }finally{
+            conn.release();
+        }
+    },
     getMovieById: async (id) => {
         const conn = await getConnection();
         try{

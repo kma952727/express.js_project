@@ -5,12 +5,11 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 const User = require('../models/user.model');
-const getConnection = require('../config/db');
+const getConnection = require('./db');
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 module.exports = function(passport) {
 
-    //  Login
     const loginConfig =  { 
         session: false
     }
@@ -26,7 +25,6 @@ module.exports = function(passport) {
         }
     }
 
-    //  JWT Verify
     const authConfig = {
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
         passReqToCallback: true,

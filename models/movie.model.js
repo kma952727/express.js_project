@@ -16,6 +16,15 @@ module.exports = Movie = {
             throw err;
         }
     },
+    getMovieDetailInfo: async() => {
+        try{
+            const sql = `
+            
+            `;
+        }catch(err){
+
+        }finally{}
+    },
     getMovieById: async (id, conn) => {
         try{
             const sql = `SELECT * FROM movie WHERE movie_id = ${id}`;
