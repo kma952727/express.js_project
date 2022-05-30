@@ -1,6 +1,6 @@
 const { successResponse } = require('../common/response');
 const getConnection = require('../config/db');
-const { removeAtCartRequest, getCartItemResponse } = require('../dto/movie.dto');
+const { removeAtCartRequest, getCartItemResponse, movieSummary } = require('../dto/movie.dto');
 const Cart = require('../models/cart.model');
 
 module.exports = movieShoppingService = {
@@ -8,7 +8,7 @@ module.exports = movieShoppingService = {
         const conn = await getConnection();
         try{
             const items = await Cart.getCartItemsByUserId(userId, conn);
-            return successResponse(items.map(item => getCartItemResponse(item)))
+            return successResponse(items.map(item => movieSummary(item)))
         }catch(err){
             throw err;
         }finally{
