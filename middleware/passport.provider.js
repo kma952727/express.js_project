@@ -2,6 +2,7 @@ const passport = require('passport');
 const { errorResponse, successResponse } = require('../common/response');
 const errorCode = require('../common/error.code');
 const jwtProvider = require('../common/jwt.provider');
+const { userDetail } = require('../dto/user.dto');
 
 /**
  * passport 기능제공
@@ -16,7 +17,7 @@ module.exports = passportProvider = {
             if(args[1] === false) {
                 next(errorResponse(errorCode.DECODED_TOKEN_FAILED, 'invalid Token!', 401));
             } else {
-                res.user = args[1];
+                req.user = userDetail(args[1]);
                 next();
             }
             })(req, res, next);

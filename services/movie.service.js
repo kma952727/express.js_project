@@ -1,6 +1,6 @@
 const Movie = require('../models/movie.model');
 const getConnection = require('../config/db');
-const {movieSummary, movieDetail} = require('../dtos/movie.dto');
+const {movieSummary, movieDetail} = require('../dto/movie.dto');
 
 module.exports = movieService = {
     getMoviesSummaryPage: async (page) => {
@@ -33,6 +33,19 @@ module.exports = movieService = {
         } catch(err) {
             throw err;
         }finally{
+            conn.release();
+        }
+    },
+    deleteMovieById: async (id) => {
+        const conn = await getConnection();
+        try{
+            conn.beginTransaction();
+                await Movie.deleteMovieById(id, conn);
+            conn.commit();
+        }catch(err) {
+            conn.rollback();
+            throw err;
+        }finally {
             conn.release();
         }
     }

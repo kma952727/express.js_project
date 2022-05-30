@@ -1,12 +1,12 @@
 const app = require('express')();
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const dotenv = require('./config');
+const dotenv = require('./config/env');
 const passportProvider = require('./middleware/passport.provider');
 const blockHttpMethod = require('./middleware/block.http.method');
 const logRequestTime = require('./middleware/time.middleware');
-
 require('./config/passport.config')(passport);
+
 app.use(blockHttpMethod);
 app.use(logRequestTime);
 app.use(bodyParser.json());
