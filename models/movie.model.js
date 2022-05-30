@@ -1,5 +1,6 @@
 const { errorResponse } = require("../common/response");
 const { NOT_FOUND_MOVIE } = require("../common/error.code");
+const errorCode = require("../common/error.code");
 
 module.exports = Movie = {
     getMoviesPage: async (requestPageNum, conn) => {
@@ -8,9 +9,9 @@ module.exports = Movie = {
         try{
             const sql = `SELECT M.* FROM (
                 SELECT * FROM movie
-                ORDER BY movie_id asc
-            )as M LIMIT ${perPage} OFFSET ${pageNum}`;
-            const [rows, fields] = await conn.execute(sql);
+                ORDER BY movie_id desc
+            )as M LIMIT ? OFFSET ?`;
+            const [rows, fields] = await conn.execute(sql, [perPage, pageNum]);
             return rows;
         }catch(err) {
             throw err;
@@ -35,6 +36,25 @@ module.exports = Movie = {
                 return rows[0];
             }
         }catch(err) {
+            throw err;
+        }
+    },
+    deleteMovieById: async(id, conn) => {
+        try{
+            const deleteJoinTableSql = `
+                DELETE mc, mc2, mc3 
+                FROM movie_cast mc
+                LEFT JOIN movie_company mc2 ON mc.movie_id = mc2.movie_id
+                LEFT JOIN movie_crew mc3 ON mc.movie_id = mc3.movie_id
+                WHERE mc.movie_id = ?`;
+            const deleteMovieSql = `DELETE m FROM movie m WHERE m.movie_id = ?`;
+            await conn.execute(deleteJoinTableSql, [id]);
+            const result = await conn.execute(deleteMovieSql, [id]);
+            if(result[0].affectedRows === 0) {
+                throw errorResponse(errorCode.NOT_FOUND_MOVIE, `삭제할 데이터가 없음, ${id}`, 404);
+            }
+        }catch(err) {
+            console.log(err);
             throw err;
         }
     }
