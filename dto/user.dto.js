@@ -29,3 +29,7 @@ exports.updateRequest = (data, userId) => {
         mail: data.mail 
     }
 };
+
+exports.signUpResponse = (userId) => {
+    return { userId: userId }
+}

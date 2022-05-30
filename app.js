@@ -16,6 +16,7 @@ app.post('/login',passportProvider.login);
 app.use(passportProvider.verifiedJWT);
 
 app.use('/users', require('./routes/user.route'));
+app.use('/users', require('./routes/movie.shopping.route'))
 app.use('/movies', require('./routes/movie.route'));
 app.use((err, req, res, next) => res.status(err.httpStatus).send(err));
 app.listen(dotenv.PORT, ()=> console.log(`Listening on Port: ${dotenv.PORT}`));

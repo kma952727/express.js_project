@@ -2,7 +2,7 @@ const getConnection = require('../config/db');
 const hashData = require('../common/encoder.provider');
 const User = require('../models/user.model');
 const { successResponse, errorResponse } = require('../common/response');
-const { userDetail } = require('../dto/user.dto');
+const { userDetail, signUpResponse } = require('../dto/user.dto');
 const errorCode = require('../common/error.code');
 
 module.exports = userService = {
@@ -12,9 +12,9 @@ module.exports = userService = {
             conn.beginTransaction();
             await User.isExistsUsername(signUpRequest.username, conn);
             const hashedPassword = await hashData(signUpRequest.password);
-            const signUpUserData = await User.insertUser(signUpRequest, hashedPassword, conn);
+            const userId = await User.insertUser(signUpRequest, hashedPassword, conn);
             conn.commit();
-            return successResponse(signUpUserData);
+            return successResponse(signUpResponse(userId));
         } catch(err) {
             conn.rollback();
             throw err;

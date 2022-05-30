@@ -24,3 +24,23 @@ exports.movieSummary = (movie) => {
         overview: movie.overview
     }
 }
+
+exports.buyMovieRequest = (movieId, userId) => {
+    return {
+        userId: userId,
+        movieId: movieId
+    }
+}
+
+exports.addToCartRequest = (movieId, userId) => {
+    return {
+        movieId: movieId,
+        userId: userId
+    }
+}
+exports.removeAtCartRequest = (itemId, userId) => {
+    return {
+        itemId: Number(itemId),
+        userId: userId
+    }
+}

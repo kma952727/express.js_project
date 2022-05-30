@@ -22,8 +22,11 @@ const { errorResponse } = require('../common/response');
     },
     insertUser : async (signUpRequest, password, conn) => {
         try{
-            const sql = `INSERT INTO users (username, password, register_date, account, mail) VALUES (?, ?, ?, ?, ?)`;
-            await conn.execute(sql, [signUpRequest.username, password, new Date(), 0, signUpRequest.mail]);
+            const createUserSql = `INSERT INTO users (username, password, register_date, account, mail) VALUES (?, ?, ?, ?, ?)`;
+            const createMovieCartSql = `INSERT INTO movie_cart (user_id) values (?)`;
+            const userId = await conn.execute(createUserSql, [signUpRequest.username, password, new Date(), 0, signUpRequest.mail]);
+            await conn.execute(createMovieCartSql, [userId[0].insertId]);
+            return userId[0].insertId;
         } catch(err) {
             throw errorResponse(errorCode.UNKNOWN_ERROR, `회원가입 실패, ${signUpRequest.username}`, 500);
         }
