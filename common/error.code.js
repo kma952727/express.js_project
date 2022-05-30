@@ -5,6 +5,7 @@
  * 00xx : common
  * 01xx : movie
  * 02xx : user
+ * 03xx : cartItem
  * 96xx : method
  * 97xx : jwt token
  * 98xx : request data
@@ -31,6 +32,7 @@ module.exports = {
     'NOT_FOUND_USER' : '020100', // 존재하지 않는 userId
     'EXISTS_USERNAME' : '020201', // 존재하는 users테이블의 username
     'EXISTS_MAIL' : '020202', // 존재하는 users테이블의 mail
+    'NOT_FOUND_CART_ITEM': '030100', // 장바구니에 아이템이 존재하지 않음
     'HASH_FAILED': '009900', // 암호화 실패
     'TOKEN_EXPIRED': '979700', // 토큰 + 만료기간 
     'INVALID_METHOD' : '960300', // 잘못된 http method

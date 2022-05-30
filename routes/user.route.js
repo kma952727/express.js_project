@@ -2,6 +2,7 @@ const router = require('express').Router();
 const userService = require('../services/user.service');
 const asyncWrapper = require('../middleware/route.async.wrapper');
 const userDTO = require('../dto/user.dto');
+const { buyMovieRequest } = require('../dto/movie.dto');
 
 router.route('/')
     .get(asyncWrapper(async(req, res) => {
@@ -12,7 +13,7 @@ router.route('/')
     )
     .post(asyncWrapper(async (req, res) => {
             const signUpResult = await userService.signUp(userDTO.signUpRequest(req.body));
-            res.status(signUpResult.httpStatus).json(signUpResult);
+            res.status(signUpResult.httpStatus).send(signUpResult);
         })
     )
     .put(asyncWrapper( async(req, res) => {
