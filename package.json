@@ -16,7 +16,6 @@
     "passport-local": "^1.0.0"
   },
   "scripts": {
-    "dev": "nodemon app.js",
-    "echo": "hello, express.js!"
+    "dev": "nodemon app.js"
   }
 }
