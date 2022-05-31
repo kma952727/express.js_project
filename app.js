@@ -11,7 +11,10 @@ app.use(blockHttpMethod);
 app.use(logRequestTime);
 app.use(bodyParser.json());
 app.use(passport.initialize());
-
+app.use((req, res, next) => {
+    console.log('요청!');
+    next();
+});
 app.post('/login',passportProvider.login);
 app.use(passportProvider.verifiedJWT);
 
@@ -19,4 +22,4 @@ app.use('/users', require('./routes/user.route'));
 app.use('/users', require('./routes/movie.shopping.route'))
 app.use('/movies', require('./routes/movie.route'));
 app.use((err, req, res, next) => res.status(err.httpStatus).send(err));
-app.listen(dotenv.PORT, ()=> console.log(`Listening on Port: ${dotenv.PORT}`));
+app.listen(dotenv.PORT, ()=> console.log(`hello! Port: ${dotenv.PORT}`));
