@@ -69,7 +69,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+# .env JENKINS 적용 완료 후 다시 제외 예정
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
