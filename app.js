@@ -11,13 +11,8 @@ app.use(blockHttpMethod);
 app.use(logRequestTime);
 app.use(bodyParser.json());
 app.use(passport.initialize());
-app.use((req, res, next) => {
-    console.log('요청!');
-    next();
-});
 app.post('/login',passportProvider.login);
 app.use(passportProvider.verifiedJWT);
-
 app.use('/users', require('./routes/user.route'));
 app.use('/users', require('./routes/movie.shopping.route'))
 app.use('/movies', require('./routes/movie.route'));
