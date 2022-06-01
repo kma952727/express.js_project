@@ -33,7 +33,9 @@ module.exports = function(passport) {
     const jwtVerifiedProcess = async (req, userInfo, done) => {
         const conn = await getConnection();
         try{
+            
             const user = await User.getUserById(userInfo.userID, conn);
+            
             if(user) {
                 return done(null, user);
             } else {

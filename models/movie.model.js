@@ -10,8 +10,8 @@ module.exports = Movie = {
             const sql = `SELECT M.* FROM (
                 SELECT * FROM movie
                 ORDER BY movie_id desc
-            )as M LIMIT ? OFFSET ?`;
-            const [rows, fields] = await conn.execute(sql, [perPage, pageNum]);
+            )as M LIMIT ${perPage} OFFSET ${pageNum}`;
+            const [rows] = await conn.execute(sql);
             return rows;
         }catch(err) {
             throw err;

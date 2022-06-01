@@ -6,7 +6,6 @@ const movieShoppingService = require('../services/movie.shopping.service');
 router.route('/movie-carts/items')
     .get(asyncWrapper(async(req, res) => {
         const result = await movieShoppingService.getCartItemsByUserId(req.user.userId);
-        console.log(result);
         res.status(200).send(result);
     }))
     .post(asyncWrapper(async(req, res) => {
