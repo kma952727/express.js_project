@@ -6,9 +6,7 @@ const passportProvider = require('./middleware/passport.provider');
 const blockHttpMethod = require('./middleware/block.http.method');
 const logRequestTime = require('./middleware/time.middleware');
 require('./config/passport.config')(passport);
-app.use((req, res, next) => {
-    console.log('Catch Request');
-});
+app.use((req, res, next) => console.log('Catch Request'));
 app.use(blockHttpMethod);
 app.use(logRequestTime);
 app.use(bodyParser.json());
