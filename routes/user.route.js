@@ -2,7 +2,6 @@ const router = require('express').Router();
 const userService = require('../services/user.service');
 const asyncWrapper = require('../middleware/route.async.wrapper');
 const userDTO = require('../dto/user.dto');
-const { buyMovieRequest } = require('../dto/movie.dto');
 
 router.route('/')
     .get(asyncWrapper(async(req, res) => {
