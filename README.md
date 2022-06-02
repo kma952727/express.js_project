@@ -1,4 +1,4 @@
-# Express.js Portfolio
+# Express.js Portfolio🔥
 
 Node.js 환경에서 Express.js 모듈을 활용한 영화정보제공 API Server
 
@@ -17,7 +17,7 @@ Node.js 환경에서 Express.js 모듈을 활용한 영화정보제공 API Serve
 3. Mysql2
 4. Passport & JWT ( Authentication )
 6. AWS & Jenkins ( Deploy )
-
+7. PostMan ( Test )
 # 개발, 배포 구성
 ### 어떻게 배포를 할까?   
 <img width="867" alt="스크린샷 2022-06-02 오전 1 28 56" src="https://user-images.githubusercontent.com/80996897/171454268-d07c8556-ce9c-4067-be6e-31e4043d697b.png">
@@ -28,10 +28,21 @@ AWS EC2의 Jenkins에서 build를 하면 새로운 버전의 app이 배포됩니
 ### 서비스가 어떤 구조일까?   
 <img width="676" alt="스크린샷 2022-06-02 오전 7 11 19" src="https://user-images.githubusercontent.com/80996897/171510392-58d28151-7775-4f71-9b85-46ca3008749e.png">
   
-app.js : allowed Http Method, CORS, Log, verify authToken, 라우팅 분기등... 서비스의 모든로직에 공통적으로 필요한 부분을 담당합니다.  
-Route Layer : 서비스 레이어로 데이터를 패스해줍니다.   
-Service Layer : 실제 비즈니스 로직이 작성되며 필요한 데이터를 Model Layer에 요청합니다.   
-Model Layer : Service Layer의 요청을 받고 DB와 통신하여 데이터를 넘겨줍니다.   
+app.js - allowed Http Method, CORS, Log, verify authToken, 라우팅 분기등... 서비스의 모든로직에 공통적으로 필요한 부분을 담당합니다.  
+Route Layer - 서비스 레이어로 데이터를 패스해줍니다.   
+Service Layer - 실제 비즈니스 로직이 작성되며 필요한 데이터를 Model Layer에 요청합니다. ( 커스텀 exception이 발생되는 레이어, 트랜잭션 시작점 )   
+Model Layer - Service Layer의 요청을 받고 DB와 통신하여 데이터를 넘겨줍니다. ( 커스텀 exception이 발생되는 레이어 )   
+  
+Etc - common, config, dto 폴더등에서 작성된 모듈을 사용하여 로직을 도와줍니다.  
+   
+# DB
+
+movie, movie_company, product_company, movie_crew, movie_cast table은  
+인터넷에 공유되어있는 더미데이터 입니다.   
+추가적으로 users, movie_cart, movie_cart_item table은 직접 작성하여  
+사용자가 영화를 장바구니에 담는 기능을 만들었습니다.   
+<img width="781" alt="스크린샷 2022-06-02 오전 9 38 38" src="https://user-images.githubusercontent.com/80996897/171523917-5c13d592-9f25-4b1e-a1f9-51bc860ac36b.png">
+  
    
 # api.  
 
